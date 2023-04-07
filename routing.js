@@ -27,13 +27,13 @@ function initMap() {
         destination: {
             query: document.getElementById("end").value,
         },
-        // DRIVING은 안되고 TRANSIT만 가능!!!!!
+        // DRIVING, WALKING, BICYCLING은 안되고 TRANSIT만 가능!!!!!
         travelMode: google.maps.TravelMode.TRANSIT,
       })
       .then((response) => {
         directionsRenderer.setDirections(response);
       })
-      .catch((e) => window.alert("Directions request failed due to " + status));
+      .catch((e) => window.alert("Directions request failed due"));
   }
   
   window.initMap = initMap;
