@@ -22,18 +22,10 @@ function initMap() {
     directionsService
       .route({
         origin: {
-            // query: document.getElementById("start").value,
-            // query: new google.maps.LatLng(35.016885, 126.803689),
-            // query: google.maps.places.Place(placeId="ChIJVQ0vecIlcjURRcGMdyMmXR4"),
-            // query: { 'placeId': "ChIJVQ0vecIlcjURRcGMdyMmXR4" }
-            query: "대한민국 전라남도 나주시 혁신로 200"
+            query: document.getElementById("start").value,
         },
         destination: {
-            // query: document.getElementById("end").value,
-            // query: new google.maps.LatLng(35.022072, 126.784115),
-            // query: google.maps.places.Place(placeId="ChIJCZX0VhE7cDUR8qbnrkUSmJY"),
-            // query: { 'placeId': "ChIJCZX0VhE7cDUR8qbnrkUSmJY" }
-            query: "대한민국 전라북도 전주시 완산구 호암로 41"
+            query: document.getElementById("end").value,
         },
         // DRIVING은 안되고 TRANSIT만 가능!!!!!
         travelMode: google.maps.TravelMode.TRANSIT,
