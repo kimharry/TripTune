@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripTune</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <script type="module" src="./js/happy.js"></script>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <div id="content">
+        <form>
+            <label for="userInput">Where do you want to go?</label>
+            <input type="text" id="userInput" name="userInput"><br><br>
+            <button type="submit">Send</button>
+        </form>
+        <div id="botResponse"></div>
+    </div>
+
+    <script src="./routing.js"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiZ7FXkWXovxE5sPupQjRxLjVVMkk8XEo&callback=initMap&v=weekly"
+        defer></script>
+</body>
+
+</html>
