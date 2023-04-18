@@ -4,9 +4,23 @@ const { Configuration, OpenAIApi } = require("openai");
 const path = require('path');
 const app = express();
 const fs = require('fs')
+const session = require('express-session');
+const MemoryStore = require('memorystore')(session);
 app.use(express.static('static'));
 require('dotenv').config()
 
+const maxAge = 1000*60*5;
+
+const sessionObj = {
+  secret: 'helpme',
+  resave: false,
+  saveUninitialized: true,
+  store: new MemoryStore({checkPeoriod: maxAge}),
+  cookie:{
+    maxAge,
+  },
+}
+app.use(session(sessionObj));
 // Set up the OpenAI API client
 const configuration = new Configuration({
   organization: process.env.OPENAI_ORG,
@@ -19,7 +33,8 @@ app.use(bodyParser.json());
 // Route to handle the user's input
 app.post('/processInput', (req, res) => {
   // Get the user's input from the request body
-  const inputText = req.body.inputText + '. Print only origin and destination from this sentence seperated by comma.';
+  const inputText = req.body.inputText + '. Please extract the places and\
+   change the name to official place names so that Google Map API can understand. Seperate each location with #, Just name of a place';
   console.log(inputText)
   // Send the user's input to OpenAI's API for processing
   openaiClient.createChatCompletion({
@@ -30,7 +45,12 @@ app.post('/processInput', (req, res) => {
     // Extract the chat-bot's response from the OpenAI API response
     const botResponse = response.data.choices[0].message.content;
     console.log(response.data.choices[0].message.content)
-    // Send the chat-bot's response back to the client
+    sendans = response.data.choices[0].message.content.split('#');
+    console.log(typeof(sendans));
+    req.session.location = sendans;
+    req.session.save(()=>{
+      console.log("saved");
+    });
     res.json({ botResponse });
   })
   .catch(error => {
