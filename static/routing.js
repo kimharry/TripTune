@@ -19,21 +19,24 @@ function initMap() {
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     // const {Place} = await google.map.importLibrary("places");
 
-    directionsService
-        .route({
-            origin: {
-                query: document.getElementById("start").value,
-            },
-            destination: {
-                query: document.getElementById("end").value,
-            },
-            // DRIVING, WALKING, BICYCLING은 안되고 TRANSIT만 가능!!!!!
-            travelMode: google.maps.TravelMode.TRANSIT,
-        })
-        .then((response) => {
-            directionsRenderer.setDirections(response);
-        })
-        .catch((e) => window.alert("Directions request failed due"));
+    routeRequest = {
+        origin: document.getElementById("start").value,
+        destination: document.getElementById("end").value,
+        // DRIVING, WALKING, BICYCLING은 안되고 TRANSIT만 가능!!!!!
+        travelMode: google.maps.TravelMode.TRANSIT,
+    };
+
+    const response = directionsService.route(routeRequest);
+        // .then((response) => {
+        //     directionsRenderer.setDirections(response);
+        // })
+        // .catch((e) => window.alert("Failed to find route. Please try again."));
+
+    try {
+        directionsRenderer.setDirections(response);
+    } catch(e) {
+        window.alert("Failed to find route. Please try again.");
+    }
 }
   
 window.initMap = initMap;
