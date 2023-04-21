@@ -8,35 +8,37 @@ function initMap() {
   
     directionsRenderer.setMap(map);
   
-    const onChangeHandler = function () {
-        calculateAndDisplayRoute(directionsService, directionsRenderer);
-    };
+    // const onChangeHandler = function () {
+    //     calculateAndDisplayRoute(directionsService, directionsRenderer);
+    // };
   
-    document.getElementById("start").addEventListener("change", onChangeHandler);
-    document.getElementById("end").addEventListener("change", onChangeHandler);
+    // document.getElementById("start").addEventListener("change", onChangeHandler);
+    // document.getElementById("end").addEventListener("change", onChangeHandler);
+
+    calculateAndDisplayRoute(directionsService, directionsRenderer);
 }
   
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     // const {Place} = await google.map.importLibrary("places");
 
     routeRequest = {
-        origin: document.getElementById("start").value,
-        destination: document.getElementById("end").value,
+        origin: "대한민국 전라남도 나주시 혁신로 200",
+        
+        destination: "대한민국 전라북도 전주시 완산구 호암로 41",
         // DRIVING, WALKING, BICYCLING은 안되고 TRANSIT만 가능!!!!!
         travelMode: google.maps.TravelMode.TRANSIT,
     };
 
-    const response = directionsService.route(routeRequest);
-        // .then((response) => {
-        //     directionsRenderer.setDirections(response);
-        // })
-        // .catch((e) => window.alert("Failed to find route. Please try again."));
+    // const response = directionsService.route(routeRequest);
+    directionsService.route(routeRequest)
+        .then((response) => {
+            // directionsRenderer.setDirections(response);
+            console.log(response.routes[0].legs[0].duration.value);
+            // console.log(response);
+        })
+        .catch((e) => console.log("failed to find time info"));
 
-    try {
-        directionsRenderer.setDirections(response);
-    } catch(e) {
-        window.alert("Failed to find route. Please try again.");
-    }
+    // console.log(response);
 }
-  
+
 window.initMap = initMap;

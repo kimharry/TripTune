@@ -19,7 +19,7 @@ const sessionObj = {
   cookie:{
     maxAge,
   },
-}
+};
 app.use(session(sessionObj));
 // Set up the OpenAI API client
 const configuration = new Configuration({
@@ -48,6 +48,7 @@ app.post('/processInput', (req, res) => {
     sendans = response.data.choices[0].message.content.split('#');
     console.log(typeof(sendans));
     req.session.location = sendans;
+    console.log(req.session)
     req.session.save(()=>{
       console.log("saved");
     });
