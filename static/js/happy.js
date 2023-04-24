@@ -1,7 +1,11 @@
+// import { setCookie } from "./cookie.js";
+import Cookies from 'js-cookie'
+
 const form = document.querySelector('form');
 const userInput = document.querySelector('#userInput');
 const botResponse = document.querySelector('#botResponse');
-const apiKey = "AIzaSyDiZ7FXkWXovxE5sPupQjRxLjVVMkk8XEo";
+
+var placesAddressArray = new Array;
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -33,23 +37,20 @@ form.addEventListener('submit', (event) => {
       if (data.results.length === 0) {
           throw new Error('Could not find place ID for "${loc}"');
       }
-      console.log(data.results[0].geometry.location);
+      console.log(data.results[0].formatted_address);
       // locations.push(data.results[0].geometry.location);
       // console.log(locations);
-      return data.results[0].geometry.location;
+      return data.results[0].formatted_address;
     }));
     console.log(home);
     return home;
   })
   .then(locs => {
-    console.log(locs);
-    console.log(locs.splice(1,locs.length-1));
+    // console.log(locs);
+    placesAddressArray = locs;
+    console.log(placesAddressArray);
+    // setCookie("placesAddressArray", "test cookie", 10);
+    Cookies.set("placesAddressArray", "test cookie");
   })
   .catch(error => console.error(error));
 });
-async function wait(sec) {
-  let start = Date.now(), now = start;
-  while (now - start < sec) {
-      now = Date.now();
-  }
-}
