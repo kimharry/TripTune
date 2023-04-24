@@ -1,6 +1,7 @@
 const form = document.querySelector('form');
 const userInput = document.querySelector('#userInput');
 const botResponse = document.querySelector('#botResponse');
+const apiKey = "AIzaSyDiZ7FXkWXovxE5sPupQjRxLjVVMkk8XEo";
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -19,6 +20,36 @@ form.addEventListener('submit', (event) => {
   .then(data => {
     // Display the chat-bot's response
     botResponse.innerHTML = data.botResponse;
+    const loc = data.botResponse.split("#");
+    let locations = new Array;
+    // console.log(loc);
+    const home = Promise.all(loc.map(async(location) => {
+       location = location.replace(/ /g,"_");
+       console.log(location);
+      const url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+location+'&key=AIzaSyCvJXzXweghDtRqsrsi63K0RU17ozkSel4';
+      console.log(url);
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.results.length === 0) {
+          throw new Error('Could not find place ID for "${loc}"');
+      }
+      console.log(data.results[0].geometry.location);
+      // locations.push(data.results[0].geometry.location);
+      // console.log(locations);
+      return data.results[0].geometry.location;
+    }));
+    console.log(home);
+    return home;
+  })
+  .then(locs => {
+    console.log(locs);
+    console.log(locs.splice(1,locs.length-1));
   })
   .catch(error => console.error(error));
 });
+async function wait(sec) {
+  let start = Date.now(), now = start;
+  while (now - start < sec) {
+      now = Date.now();
+  }
+}
