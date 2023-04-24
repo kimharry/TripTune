@@ -60,61 +60,34 @@ function calculateAndDisplayRoute(
     //     // DRIVING, WALKING, BICYCLING은 안되고 TRANSIT만 가능!!!!!
     //     travelMode: google.maps.TravelMode.TRANSIT,
     // };
+  
+    // document.getElementById("start").addEventListener("change", onChangeHandler);
+    // document.getElementById("end").addEventListener("change", onChangeHandler);
 
-    // directionsService.route(routeRequest)
-    //     .then((response) => { console.log(response.routes[0].legs[0].duration.value); })
-
-    console.log(placesAddressArray);
-    const routeCases = getPermutations(placesAddressArray);
-    console.log(routeCases);
+    calculateAndDisplayRoute(directionsService, directionsRenderer);
 }
+  
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    // const {Place} = await google.map.importLibrary("places");
 
-function wait(sec) {
-    let start = Date.now(), now = start;
-    while (now - start < sec) {
-        now = Date.now();
-    }
-}
-
-function main() {
-
-    const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer();
-
-    let placesAddressArray = "";
-
-    // var checkCookie = function() {
-    //     var lastCookie = document.cookie; // 'static' memory between function calls
+    routeRequest = {
+        origin: "대한민국 전라남도 나주시 혁신로 200",
         
-    //     return function() {
-    //         var currentCookie = document.cookie;
-    //         if (currentCookie != lastCookie) {
-    //             // something useful like parse cookie, run a callback fn, etc.
-    //             lastCookie = currentCookie; // store latest cookie
-    //         }
-    //     };
-    // }();
+        destination: "대한민국 전라북도 전주시 완산구 호암로 41",
+        // DRIVING, WALKING, BICYCLING은 안되고 TRANSIT만 가능!!!!!
+        travelMode: google.maps.TravelMode.TRANSIT,
+    };
 
-    // window.setInterval(checkCookie, 100);
+    // const response = directionsService.route(routeRequest);
+    directionsService.route(routeRequest)
+        .then((response) => {
+            // directionsRenderer.setDirections(response);
+            console.log(response.routes[0].legs[0].duration.value);
+            // console.log(response);
+        })
+        .catch((e) => console.log("failed to find time info"));
 
-    // while(true) {
-    //     if (getCookie("placesAddressArray") != null && placesAddressArray != getCookie("placesAddressArray")) {
-    //         placesAddressArray = getCookie("placesAddressArray");
-    //         calculateAndDisplayRoute(directionsService, directionsRenderer, placesAddressArray);
-    //         break;
-    //     }
-    //     else {
-    //         wait(1000);
-    //     }
-        // chrome.cookies.onChanged.addListener(calculateAndDisplayRoute);
-    // }
-
-    // while(true) {
-    //     if (placesAddressArray != getCookie("placesAddressArray")) {
-    //         placesAddressArray = getCookie("placesAddressArray");
-    //         calculateAndDisplayRoute(directionsService, directionsRenderer, placesAddressArray);
-    //     }
-    // }
+    // console.log(response);
 }
 
 window.initMap = initMap;

@@ -54,3 +54,9 @@ form.addEventListener('submit', (event) => {
   })
   .catch(error => console.error(error));
 });
+async function wait(sec) {
+  let start = Date.now(), now = start;
+  while (now - start < sec) {
+      now = Date.now();
+  }
+}
