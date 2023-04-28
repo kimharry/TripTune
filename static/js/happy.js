@@ -1,11 +1,9 @@
-// import { setCookie } from "./cookie.js";
-import Cookies from 'js-cookie'
+// import * as Cookies from "/node_modules/js-cookie/js-cookie.js"
 
 const form = document.querySelector('form');
 const userInput = document.querySelector('#userInput');
 const botResponse = document.querySelector('#botResponse');
-
-var placesAddressArray = new Array;
+const apiKey = "AIzaSyDiZ7FXkWXovxE5sPupQjRxLjVVMkk8XEo";
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -37,26 +35,21 @@ form.addEventListener('submit', (event) => {
       if (data.results.length === 0) {
           throw new Error('Could not find place ID for "${loc}"');
       }
-      console.log(data.results[0].formatted_address);
+      console.log(data.results[0].place_id);
       // locations.push(data.results[0].geometry.location);
       // console.log(locations);
-      return data.results[0].formatted_address;
+      return data.results[0];
     }));
     console.log(home);
     return home;
   })
   .then(locs => {
-    // console.log(locs);
-    placesAddressArray = locs;
-    console.log(placesAddressArray);
-    // setCookie("placesAddressArray", "test cookie", 10);
-    Cookies.set("placesAddressArray", "test cookie");
+    console.log(locs);
+    locs[0] = locs[0].geometry.location.lat + "/" + locs[0].geometry.location.lng;
+    locs[1] = locs[1].place_id;
+    locs[2] = locs[2].place_id;
+    locs[3] = locs[3].place_id;
+    Cookies.set("placeIdArray", locs.join("#"), "1");
   })
   .catch(error => console.error(error));
 });
-async function wait(sec) {
-  let start = Date.now(), now = start;
-  while (now - start < sec) {
-      now = Date.now();
-  }
-}
